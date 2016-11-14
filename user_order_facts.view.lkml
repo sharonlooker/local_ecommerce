@@ -44,7 +44,7 @@ GROUP BY user_id
 
   dimension_group: latest_order {
     type: time
-    timeframes: [date, week, month, year]
+    timeframes: [date, week, month, year, hour12]
     sql: ${TABLE}.latest_order ;;
   }
 

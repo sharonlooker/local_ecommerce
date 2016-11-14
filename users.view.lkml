@@ -24,10 +24,27 @@ view: users {
 
   dimension_group: created {
     type: time
-    timeframes: [time, date, week, month]
+    timeframes: [time, date, week, month,raw]
     sql: ${TABLE}.created_at ;;
   }
 
+  dimension: days_as_user {
+    type: number
+    sql: TIMESTAMPDIFF(DAY, ${created_raw},now()) ;;
+  }
+
+  filter: date_group {
+    suggestions: ["Date", "Month", "Week"]
+  }
+
+  dimension: dynamic_created_time {
+    sql:
+      CASE
+        WHEN {% parameter date_group %} = 'Date' THEN ${created_date}
+        WHEN {% parameter date_group %} = 'Week' THEN ${created_week}
+        WHEN {% parameter date_group %} = 'Month' THEN ${created_month}
+      END ;;
+  }
   dimension: email {
     type: string
     sql: ${TABLE}.email ;;
@@ -48,13 +65,17 @@ view: users {
     sql: ${TABLE}.last_name ;;
   }
 
+  dimension: full_name {
+    type:  string
+    sql: CONCAT(${first_name}," ", ${last_name}) ;;
+  }
   dimension: state {
     type: string
     sql: ${TABLE}.state ;;
   }
 
   dimension: zip {
-    type: number
+    type: zipcode
     sql: ${TABLE}.zip ;;
   }
 

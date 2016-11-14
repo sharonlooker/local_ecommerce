@@ -28,10 +28,32 @@ view: order_items {
   dimension: sale_price {
     type: number
     sql: ${TABLE}.sale_price ;;
+    value_format: "$#.00;($#.00)"
   }
 
   measure: count {
     type: count
     drill_fields: [id, orders.id, inventory_items.id]
+  }
+
+  measure: average_sale_price {
+    type: average
+    value_format: "$#.00;($#.00)"
+    sql: ${sale_price} ;;
+  }
+
+  measure: sum_sale_price {
+    type: sum
+    sql: ${sale_price} ;;
+    value_format: "$#.00;($#.00)"
+  }
+
+  measure: first_order_count {
+    type: count_distinct
+    sql: ${order_id} ;;
+    filters: {
+      field: order_facts.is_first_order
+      value: "Yes"
+    }
   }
 }
