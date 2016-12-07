@@ -12,6 +12,13 @@ view: users {
     sql: ${TABLE}.age ;;
   }
 
+  dimension: age_tier {
+    type: tier
+    tiers: [20,30,40,50,60,70,80]
+    style: interval
+    sql: ${age} ;;
+  }
+
   dimension: city {
     type: string
     sql: ${TABLE}.city ;;
@@ -55,9 +62,17 @@ view: users {
     sql: ${TABLE}.first_name ;;
   }
 
+  dimension: gender_abbr {
+    type: string
+    hidden: yes
+    sql: ${TABLE}.gender ;;
+  }
+
   dimension: gender {
     type: string
-    sql: ${TABLE}.gender ;;
+    sql: CASE WHEN ${gender_abbr}='f' THEN 'Female'
+              WHEN ${gender_abbr}='m' THEN 'Male'
+        END;;
   }
 
   dimension: last_name {

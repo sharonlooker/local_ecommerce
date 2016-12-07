@@ -29,6 +29,17 @@ view: orders {
     drill_fields: [detail*]
   }
 
+  dimension: reporting_period {
+    type: string
+    sql:
+        CASE
+          WHEN (year(${created_raw}) = year(CURRENT_DATE)
+          AND ${created_raw} <= CURRENT_DATE) THEN 'This Year to Date'
+          WHEN (year(${created_raw}) +1 = year(CURRENT_DATE)
+          AND DAYOFYEAR(${created_raw})<= DAYOFYEAR(CURRENT_DATE)) THEN 'Last Year to Date'
+
+      END;;
+  }
   # ----- Sets of fields for drilling ------
   set: detail {
     fields: [id, users.last_name, users.first_name, users.id, order_items.count, t1.count]
