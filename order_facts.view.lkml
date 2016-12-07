@@ -62,6 +62,12 @@ view: order_facts {
     type: yesno
     sql: ${order_sequence_number} = "1" ;;
   }
+
+  measure: average_order_price {
+    type: average
+    sql: ${order_cost} ;;
+    value_format: "$#.00"
+  }
   set: detail {
     fields: [order_id, order_date_time, items_in_order, order_amount, order_cost, order_sequence_number]
   }
