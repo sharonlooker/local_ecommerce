@@ -13,6 +13,10 @@ view: orders {
     sql: ${TABLE}.created_at ;;
   }
 
+  dimension: months_since_signup {
+    type: number
+    sql: TIMESTAMPDIFF(MONTH,${users.created_raw},${created_raw}) ;;
+  }
   dimension: status {
     type: string
     sql: ${TABLE}.status ;;

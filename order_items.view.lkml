@@ -25,6 +25,17 @@ view: order_items {
     sql: ${TABLE}.returned_at ;;
   }
 
+  filter: days_ago {
+    type: string
+  }
+
+  dimension: returned_period {
+    type: string
+    sql: CASE WHEN ${returned_date} = SUBDATE(current_date, cast({% parameter days_ago %} AS decimal)) THEN 'Day This Week'
+            WHEN ${returned_date} = SUBDATE(current_date, (cast({% parameter days_ago %} AS decimal) + 7)) THEN 'Same Day Last Week'
+            END;;
+  }
+
   dimension: sale_price {
     type: number
     sql: ${TABLE}.sale_price ;;
