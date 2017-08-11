@@ -44,6 +44,10 @@ view: products {
 
   measure: count {
     type: count
+    link: {
+      label: "Drill Link"
+      url: "http://google.com/?{{ link | encode_uri }}"
+    }
     drill_fields: [id, item_name, inventory_items.count]
   }
 }

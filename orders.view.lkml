@@ -1,6 +1,12 @@
 view: orders {
   sql_table_name: demo_db.orders ;;
 
+
+  dimension: logo {
+    type: string
+    sql: 1=1 ;;
+    html: <img src="https://assets.pcmag.com/media/images/510734-looker-logo.jpg" width="500" height="500" center/>  ;;
+  }
   dimension: id {
     primary_key: yes
     type: number
