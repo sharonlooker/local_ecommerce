@@ -18,7 +18,7 @@ view: order_facts {
       ORDER BY order_id, order_date desc
  ;;
   indexes: ["order_id", "order_date"]
-  sql_trigger_value: select curdate ;;
+  sql_trigger_value: select current_date ;;
   }
 
   measure: count {
@@ -27,6 +27,7 @@ view: order_facts {
   }
 
   dimension: order_id {
+    primary_key: yes
     type: number
     sql: ${TABLE}.order_id ;;
   }
