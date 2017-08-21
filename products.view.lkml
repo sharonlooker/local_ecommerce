@@ -17,6 +17,21 @@ view: products {
     sql: ${TABLE}.category ;;
   }
 
+  dimension: image {
+    type: string
+    html: <a href="/dashboards/4?Category={{category._value | uri_encode }}&Brand={{ _filters["products.brand"] | uri_encode }}">
+          <img src="https://i.ytimg.com/vi/4f3mux0q7oY/maxresdefault.jpg" height = '100'/></a>
+         ;;
+    sql: 1=1;;
+  }
+
+  dimension: linked_image {
+    type: string
+    sql: ${image} ;;
+    html: {{linked_value}} ;;
+    link: {}
+  }
+
   dimension: department {
     type: string
     sql: ${TABLE}.department ;;
