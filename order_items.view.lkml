@@ -42,6 +42,22 @@ view: order_items {
     value_format: "$#.00;($#.00)"
   }
 
+  filter: select_measure {
+   suggestions: ["Item Count", "Average Sale Price", "Total Sale Price"]
+  default_value: "Item Count"
+}
+
+measure: dynamic_measure {
+  type: number
+  sql: CASE
+        WHEN {% parameter select_measure %} = 'Item Count' THEN ${count}
+        WHEN {% parameter select_measure %} = 'Average Sale Price' THEN ${average_sale_price}
+        WHEN {% parameter select_measure %} = 'Total Sale Price' THEN ${sum_sale_price}
+        ELSE ${count}
+      END
+  ;;
+}
+
   measure: count {
     type: count
     drill_fields: [id, orders.id, inventory_items.id]
