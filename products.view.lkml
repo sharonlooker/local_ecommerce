@@ -25,16 +25,49 @@ view: products {
     sql: 1=1;;
   }
 
-  dimension: linked_image {
-    type: string
-    sql: ${image} ;;
-    html: {{linked_value}} ;;
-    link: {}
-  }
-
   dimension: department {
     type: string
     sql: ${TABLE}.department ;;
+  }
+
+  filter: stack_by {
+    suggestions: ["Category", "Brand", "Department"]
+  }
+
+  dimension: stack_by_dimension{
+    type: string
+    sql: CASE WHEN {% parameter stack_by %} = 'Category' THEN ${category}
+              WHEN {% parameter stack_by %} = 'Brand' THEN ${brand}
+              WHEN {% parameter stack_by %} = 'Department' THEN ${department}
+            ELSE 'NA'
+          END
+    ;;
+    link: {
+      url: "/dashboards/6?Stack%20by%20Field=Category
+      &{{ _filters['products.stack_by'] }}={{ value | url_encode }}
+      &Category={{ _filters['products.category'] }}
+      &Brand={{ _filters['products.brand'] }}
+      &Department={{ _filters['products.department'] }}"
+      label: "Seee Stacked by Category, for just {{value}}"
+    }
+
+    link: {
+      url: "/dashboards/6?Stack%20by%20Field=Brand
+      &{{ _filters['products.stack_by'] }}={{ value | url_encode }}
+      &Category={{ _filters['products.category'] }}
+      &Brand={{ _filters['products.brand'] }}
+      &Department={{ _filters['products.department'] }}"
+      label: "Seee Stacked by Brand, for just {{value}}"
+    }
+
+    link: {
+      url: "/dashboards/6?Stack%20by%20Field=Department
+      &{{ _filters['products.stack_by'] }}={{ value | url_encode }}
+      &Category={{ _filters['products.category'] }}
+      &Brand={{ _filters['products.brand'] }}
+      &Department={{ _filters['products.department'] }}"
+      label: "Seee Stacked by Department, for just {{value}}"
+    }
   }
 
   dimension: item_name {
