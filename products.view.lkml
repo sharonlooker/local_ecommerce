@@ -48,7 +48,7 @@ view: products {
       &Category={{ _filters['products.category'] }}
       &Brand={{ _filters['products.brand'] }}
       &Department={{ _filters['products.department'] }}"
-      label: "Seee Stacked by Category, for just {{value}}"
+      label: "See Stacked by Category, for just {{value}}"
     }
 
     link: {
@@ -57,7 +57,7 @@ view: products {
       &Category={{ _filters['products.category'] }}
       &Brand={{ _filters['products.brand'] }}
       &Department={{ _filters['products.department'] }}"
-      label: "Seee Stacked by Brand, for just {{value}}"
+      label: "See Stacked by Brand, for just {{value}}"
     }
 
     link: {
@@ -66,7 +66,7 @@ view: products {
       &Category={{ _filters['products.category'] }}
       &Brand={{ _filters['products.brand'] }}
       &Department={{ _filters['products.department'] }}"
-      label: "Seee Stacked by Department, for just {{value}}"
+      label: "See Stacked by Department, for just {{value}}"
     }
   }
 

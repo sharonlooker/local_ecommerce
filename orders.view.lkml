@@ -13,6 +13,50 @@ view: orders {
     sql: ${TABLE}.id ;;
   }
 
+### DYNAMIC DATE FILTER ###
+  filter: date_filter{
+    type: date
+  }
+
+  dimension_group: filter_start_date {
+    type: time
+    timeframes: [raw, date]
+    sql: CASE WHEN {% date_start date_filter %} IS NULL AND {% date_end date_filter %} is NULL THEN TIMESTAMP(0)
+          WHEN {% date_start date_filter %} IS NULL THEN '1970-01-01'
+          ELSE TIMESTAMP(NULLIF({% date_start date_filter %}, 0))
+         END;;
+  }
+
+  dimension_group: filter_end_date {
+    type: time
+    timeframes: [raw, date]
+    sql: CASE WHEN {% date_start date_filter %} IS NULL AND {% date_end date_filter %} is NULL THEN TIMESTAMP(0)
+            WHEN {% date_end date_filter %} IS NULL THEN NOW()
+            ELSE TIMESTAMP(NULLIF({% date_end date_filter %}, 0))
+         END;;
+  }
+
+  dimension: interval {
+    type: number
+    sql: TIMESTAMPDIFF(second, ${filter_end_date_raw}, ${filter_start_date_raw});;
+  }
+
+  dimension: previous_start_date {
+    type: date
+    sql: DATE_ADD(${filter_start_date_raw}, interval ${interval} second) ;;
+  }
+
+  dimension: timeframes {
+    suggestions: ["period","previous period"]
+    type: string
+    sql:
+      CASE
+        WHEN ${created_raw} BETWEEN ${filter_start_date_raw} AND  ${filter_end_date_raw} THEN "period"
+        WHEN ${created_raw} BETWEEN ${previous_start_date} AND ${filter_start_date_raw} THEN "previous Period"
+        else "not in time period"
+      END ;;
+  }
+
   dimension_group: created {
     type: time
     timeframes: [time, date, week, month, year, month_name,raw]
