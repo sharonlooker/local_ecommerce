@@ -13,6 +13,12 @@ view: order_items {
     sql: ${TABLE}.inventory_item_id ;;
   }
 
+  dimension: hyperlink_test {
+    type: string
+    html: <a href="https://google.com">https://google.com</a> ;;
+    sql: 1=1 ;;
+  }
+
   dimension: order_id {
     type: number
     # hidden: true

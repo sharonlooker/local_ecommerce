@@ -49,12 +49,41 @@ explore: order_items {
   }
 }
 
+datagroup: utc {
+  sql_trigger: select current_date ;;
+}
+
+datagroup: est {
+  sql_trigger: select date(convert_tz(current_timestamp, 'UTC', 'America/New_York'));;
+}
+
+datagroup: china {
+  sql_trigger: select date(convert_tz(current_timestamp, 'UTC', 'Asia/Shanghai')) ;;
+}
 explore: orders {
+  description: "Orders for UTC timezone"
+  hidden: yes
   join: users {
     type: left_outer
     sql_on: ${orders.user_id} = ${users.id} ;;
     relationship: many_to_one
     }
+}
+
+explore: orders_est {
+  hidden: yes
+  description: "Orders for EST timezone"
+  extends: [orders]
+  view_name: orders
+  persist_with: est
+}
+
+explore: orders_china {
+  hidden: yes
+  description: "Orders for CST timezone"
+  extends: [orders]
+  view_name: orders
+  persist_with: china
 }
 
 explore: user_data {

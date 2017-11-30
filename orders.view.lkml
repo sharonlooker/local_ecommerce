@@ -18,10 +18,17 @@ view: orders {
     type: date
   }
 
+  dimension: filter_return {
+    type: string
+#     hidden: yes
+    sql: 1=1 ;;
+    html: {{ _filters['orders.date_filter']}} ;;
+  }
+
   dimension_group: filter_start_date {
     type: time
     timeframes: [raw, date]
-    sql: CASE WHEN {% date_start date_filter %} IS NULL AND {% date_end date_filter %} is NULL THEN TIMESTAMP(0)
+    sql: CASE WHEN ${filter_return} = 'NULL' THEN TIMESTAMP(0)
           WHEN {% date_start date_filter %} IS NULL THEN '1970-01-01'
           ELSE TIMESTAMP(NULLIF({% date_start date_filter %}, 0))
          END;;
@@ -30,7 +37,7 @@ view: orders {
   dimension_group: filter_end_date {
     type: time
     timeframes: [raw, date]
-    sql: CASE WHEN {% date_start date_filter %} IS NULL AND {% date_end date_filter %} is NULL THEN TIMESTAMP(0)
+    sql: CASE WHEN ${filter_return} = 'NULL' THEN TIMESTAMP(0)
             WHEN {% date_end date_filter %} IS NULL THEN NOW()
             ELSE TIMESTAMP(NULLIF({% date_end date_filter %}, 0))
          END;;
