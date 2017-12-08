@@ -31,7 +31,7 @@ view: users {
 
   dimension_group: created {
     type: time
-    timeframes: [time, date, week, month,raw]
+    timeframes: [time, date, week, month,raw, day_of_week]
     sql: ${TABLE}.created_at ;;
   }
 
@@ -41,7 +41,7 @@ view: users {
   }
 
   filter: date_group {
-    suggestions: ["Date", "Month", "Week"]
+    suggestions: ["Date", "Month", "Week", "Day of Week"]
   }
 
   dimension: dynamic_created_time {
@@ -50,6 +50,7 @@ view: users {
         WHEN {% parameter date_group %} = 'Date' THEN ${created_date}
         WHEN {% parameter date_group %} = 'Week' THEN ${created_week}
         WHEN {% parameter date_group %} = 'Month' THEN ${created_month}
+        WHEN {% parameter date_group %} = 'Day of Week' THEN ${created_day_of_week}
       END ;;
   }
   dimension: email {

@@ -11,7 +11,7 @@ explore: order_items_extended {
   extends: [order_items]
 
     join: products {
-      fields: []
+      fields: [products.brand]
     }
     join: repeat_purchase_facts {
       fields: []

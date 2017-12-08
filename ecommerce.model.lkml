@@ -14,6 +14,10 @@ explore: extend {
 }
 
 explore: order_items {
+  access_filter: {
+    field: products.brand
+    user_attribute: brand
+  }
   join: order_facts {
     type: left_outer
     relationship: one_to_one
