@@ -97,40 +97,41 @@ measure: dynamic_measure {
     sql: '{{ _user_attributes['currency'] }}' ;;
   }
 
-  measure: total_price_currency {
+## this is a string, so will need to bring in real total converted price to sort in a table. cannot use for none text type viz
+  measure: total_price_string {
     label: "Total Price (Converted to User Currency)"
-    group_label: "Currency Conversion"
+    group_label: "Currency Conversion (String)"
     type: string
-    sql: CASE WHEN ${user_currency} = 'USD' THEN concat('$', FORMAT(${total_price},'2','en-US'))
-              WHEN ${user_currency} = 'EURO' THEN CONCAT( '€', FORMAT(${total_price}, '2','DE_DE'))
-              WHEN ${user_currency} = 'POUND' THEN CONCAT('£', FORMAT(${total_price},'2','en-GB'))
-              WHEN ${user_currency} = 'YUAN' THEN CONCAT('¥',FORMAT(${total_price},'2','zh-Hans'))
-              WHEN ${user_currency} = 'YEN' THEN CONCAT('¥', FORMAT(${total_price},'2','ja-JP'))
+    sql: CASE WHEN ${user_currency} = 'USD' THEN CONCAT('$', FORMAT(${total_price_converted},'2','en-US'))
+              WHEN ${user_currency} = 'EURO' THEN CONCAT( '€', FORMAT(${total_price_converted}, '2','DE_DE'))
+              WHEN ${user_currency} = 'POUND' THEN CONCAT('£', FORMAT(${total_price_converted},'2','en-GB'))
+              WHEN ${user_currency} = 'YUAN' THEN CONCAT('¥',FORMAT(${total_price_converted},'2','zh-Hans'))
+              WHEN ${user_currency} = 'YEN' THEN CONCAT('¥', FORMAT(${total_price_converted},'2','ja-JP'))
         END;;
   }
 
-  measure: average_sale_price_currency {
+## this is a string, so will need to bring in real total converted price to sort
+  measure: average_sale_price_string {
     label: "Average Sale Price (Converted to User Currency)"
-    group_label: "Currency Conversion"
+    group_label: "Currency Conversion (String)"
     type: string
-    sql: CASE WHEN ${user_currency} = 'USD' THEN concat('$', FORMAT(${average_sale_price},'2','en-US'))
-              WHEN ${user_currency} = 'EURO' THEN CONCAT( '€', FORMAT(${average_sale_price}, '2','DE_DE'))
-              WHEN ${user_currency} = 'POUND' THEN CONCAT('£', FORMAT(${average_sale_price},'2','en-GB'))
-              WHEN ${user_currency} = 'YUAN' THEN CONCAT('¥',FORMAT(${average_sale_price},'2','zh-Hans'))
-              WHEN ${user_currency} = 'YEN' THEN CONCAT('¥', FORMAT(${average_sale_price},'2','ja-JP'))
+    sql: CASE WHEN ${user_currency} = 'USD' THEN CONCAT('$', FORMAT(${average_price_converted},'2','en-US'))
+              WHEN ${user_currency} = 'EURO' THEN CONCAT( '€', FORMAT(${average_price_converted}, '2','DE_DE'))
+              WHEN ${user_currency} = 'POUND' THEN CONCAT('£', FORMAT(${average_price_converted},'2','en-GB'))
+              WHEN ${user_currency} = 'YUAN' THEN CONCAT('¥',FORMAT(${average_price_converted},'2','zh-Hans'))
+              WHEN ${user_currency} = 'YEN' THEN CONCAT('¥', FORMAT(${average_price_converted},'2','ja-JP'))
         END;;
   }
 
-
-  measure: total_price {
+  measure: total_price_converted {
     type: sum
-    hidden: yes
+    # hidden: yes
     sql: ${sale_price} * ${currency_conversion.exchange_rate} ;;
   }
 
-  measure: average_price {
+  measure: average_price_converted {
     type: number
-    hidden: yes
+    # hidden: yes
     sql:  ${average_sale_price} * ${currency_conversion.exchange_rate} ;;
   }
 
