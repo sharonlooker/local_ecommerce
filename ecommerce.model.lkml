@@ -4,7 +4,7 @@ connection: "thelook"
 include: "*.view"
 
 # include all the dashboards
-# include: "*.dashboard"
+include: "*.dashboard"
 
 explore: templated_filter_conditional {}
 
@@ -50,6 +50,12 @@ explore: order_items {
     type: left_outer
     relationship: many_to_one
     sql_on: ${orders.id} = ${repeat_purchase_facts.order_id};;
+  }
+
+  join: currency_conversion {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${order_items.user_currency} = ${currency_conversion.currency} ;;
   }
 }
 

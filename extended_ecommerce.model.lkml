@@ -3,7 +3,7 @@ connection: "thelook"
 include: "*.view.lkml"         # include all views in this project
   # include all dashboards in this project
 include: "ecommerce.model.lkml"
-include: "*.dashboard"
+# include: "*.dashboard"
 
 
 explore: order_items_extended {
