@@ -83,15 +83,16 @@ measure: dynamic_measure {
     value_format: "$#.00;($#.00)"
   }
 
-#   dimension: currency {
-#     type: string
-#     sql: (select a.currency
-#          from (select 'USD' as currency
-#                UNION
-#                select 'EURO' as currency)a
-#          WHERE a.currency = '{{ _user_attributes['currency'] }}');;
-#   }
+  measure: first_order_count {
+    type: count_distinct
+    sql: ${order_id} ;;
+    filters: {
+      field: order_facts.is_first_order
+      value: "Yes"
+    }
+  }
 
+############### DYNAMIC CURRENCY FIELDS ##########################
   dimension: user_currency {
     type: string
     sql: '{{ _user_attributes['currency'] }}' ;;
@@ -135,13 +136,6 @@ measure: dynamic_measure {
     sql:  ${average_sale_price} * ${currency_conversion.exchange_rate} ;;
   }
 
-  measure: first_order_count {
-    type: count_distinct
-    sql: ${order_id} ;;
-    filters: {
-      field: order_facts.is_first_order
-      value: "Yes"
-    }
-  }
+
 
 }
