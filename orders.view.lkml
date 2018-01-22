@@ -70,6 +70,12 @@ view: orders {
     sql: ${TABLE}.created_at ;;
   }
 
+  dimension: created_date_formated_MMDDYYYY {
+    type: date_time
+    sql: ${created_date} ;;
+    html: {{ value | date: "%m%d%Y" }} ;;
+  }
+
   dimension: months_since_signup {
     type: number
     sql: TIMESTAMPDIFF(MONTH,${users.created_raw},${created_raw}) ;;
@@ -105,4 +111,22 @@ view: orders {
   set: detail {
     fields: [id, users.last_name, users.first_name, users.id, order_items.count, t1.count]
   }
+
+
+  ############### REGIONAL DATE FIELDS ##########################
+  dimension: user_date_format {
+    type: string
+    sql: '{{ _user_attributes['user_date_format'] }}' ;;
+  }
+
+ dimension: created_date_regional {
+    label: "Created Date (User Locale)"
+    type: string
+    sql: CASE WHEN ${user_date_format} = 'US' THEN DATE_FORMAT(${created_date},'%m-%d-%Y')
+              WHEN ${user_date_format} = 'UK' THEN DATE_FORMAT(${created_date},'%d-%m-%Y')
+              WHEN ${user_date_format} = 'Germany' THEN DATE_FORMAT(${created_date},'%d.%m.%Y')
+              WHEN ${user_date_format} = 'China' THEN DATE_FORMAT(${created_date},"%Y-%m-%d")
+        END;;
+  }
+
 }

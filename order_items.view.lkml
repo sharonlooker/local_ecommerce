@@ -16,7 +16,7 @@ view: order_items {
   dimension: hyperlink_test {
     type: string
     html: <a href="https://google.com">https://google.com</a> ;;
-    sql: 1=1 ;;
+    sql: "https://google.com" ;;
   }
 
   dimension: order_id {
