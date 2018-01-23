@@ -3,10 +3,10 @@ view: orders_if {
      (select
         {% if order_id._in_query %} id, {% endif %}
          user_id,
-        1 as dummy --takes care of trailing comma
+        1 as dummy
       from demo_db.orders
-      where {% condition order_id_filter %} id {% endcondition %}
-        and {% condition user_id_filter %} user_id {% endcondition %}
+      where {% condition order_id %} id {% endcondition %}
+        and {% condition user_id %} user_id {% endcondition %}
       group by
         {% if order_id._in_query %} id, {% endif %}
         user_id,

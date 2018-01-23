@@ -18,7 +18,6 @@ view: users_if {
       {% if created_date._in_query %} created_at, {% endif %}
       {% if city._in_query %} city, {% endif %}
       dummy
-    having {% condition average_age_filter %} users_if.average_age {% endcondition %}
     )
     ;;
 
