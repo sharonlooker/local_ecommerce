@@ -6,6 +6,22 @@ include: "*.view"
 # include all the dashboards
 include: "*.dashboard"
 
+explore: users_if {
+  join: orders_if {
+    type: inner
+    relationship: one_to_many
+    sql_on: ${users_if.id}=${orders_if.user_id} ;;
+  }
+}
+
+explore: users {
+  join: orders {
+    type: inner
+    relationship: one_to_many
+    sql_on: ${users.id}=${orders.user_id} ;;
+  }
+}
+
 explore: templated_filter_conditional {}
 
 explore: extend {
@@ -103,5 +119,3 @@ explore: user_data {
     relationship: many_to_one
   }
 }
-
-explore: users {}

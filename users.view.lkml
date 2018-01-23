@@ -100,6 +100,11 @@ view: users {
     drill_fields: [detail*]
   }
 
+  measure: average_age {
+    type: average
+    sql: ${age} ;;
+  }
+
   # ----- Sets of fields for drilling ------
   set: detail {
     fields: [id, last_name, first_name, events.count, orders.count, user_data.count]
