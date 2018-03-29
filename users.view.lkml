@@ -35,6 +35,12 @@ view: users {
     sql: ${TABLE}.created_at ;;
   }
 
+  dimension: hour_of_day {
+    group_label: "Created Date"
+    type: date_hour_of_day
+    sql:  ${TABLE}.created_at ;;
+  }
+
   dimension: days_as_user {
     type: number
     sql: TIMESTAMPDIFF(DAY, ${created_raw},now()) ;;
@@ -73,7 +79,18 @@ view: users {
     type: string
     sql: CASE WHEN ${gender_abbr}='f' THEN 'Female'
               WHEN ${gender_abbr}='m' THEN 'Male'
+            ELSE 'Unknown'
         END;;
+    order_by_field: gender_order
+  }
+
+  dimension: gender_order {
+    type: number
+    hidden: yes
+    sql: CASE WHEN ${gender}= 'Female' THEN 2
+              WHEN ${gender}= 'Male' THEN 1
+            Else 3
+          END;;
   }
 
   dimension: last_name {
@@ -87,6 +104,7 @@ view: users {
   }
   dimension: state {
     type: string
+    map_layer_name: us_states_mine
     sql: ${TABLE}.state ;;
   }
 

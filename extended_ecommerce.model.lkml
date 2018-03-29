@@ -18,3 +18,7 @@ explore: order_items_extended {
 
     }
   }
+
+explore: outer_query {
+#   join:  {}
+}

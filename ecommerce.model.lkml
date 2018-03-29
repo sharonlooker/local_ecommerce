@@ -6,11 +6,16 @@ include: "*.view"
 # include all the dashboards
 include: "*.dashboard"
 
+map_layer: us_states_mine {
+  file: "us_states.json"
+}
+
 explore: users_if {
   join: orders_if {
     type: inner
     relationship: one_to_many
-    sql_on: ${users_if.id}=${orders_if.user_id} ;;
+#     sql_on: ${users_if.id}=${orders_if.user_id} ;;
+  sql: right outer join orders_if on ${users_if.id}=${orders_if.user_id} ;;
   }
 }
 

@@ -1,16 +1,43 @@
 view: orders {
   sql_table_name: demo_db.orders ;;
 
+  filter: status_filter {
+    sql:
+      users.id in (SELECT distinct users.id
+      FROM demo_db.users
+      inner join orders on users.id = orders.user_id
+      inner join order_items on orders.id = order_items.order_id
+      where {% condition status_filter %} orders.status {% endcondition %}
+      and {% condition user_id_filter %} orders.user_id {% endcondition %}
+      and {% condition sale_price_filter %} order_items.sale_price {% endcondition %});;
+    suggest_dimension: orders.status
+  }
+
+  filter: sale_price_filter {
+    type: number
+  }
+
+  filter: user_id_filter {
+    type: number
+  }
 
   dimension: logo {
     type: string
     sql: 1=1 ;;
     html: <img src="https://assets.pcmag.com/media/images/510734-looker-logo.jpg" width="500" height="500" center/>  ;;
   }
+
   dimension: id {
     primary_key: yes
     type: number
     sql: ${TABLE}.id ;;
+    html: {{value}} <br /> {% if status._value == 'complete'%}
+        <img src="https://emojipedia-us.s3.amazonaws.com/thumbs/120/emoji-one/104/white-heavy-check-mark_2705.png" width="20" height="20" />
+      {% elsif status._value == 'cancelled' %}
+        <img src="http://www.emoji.co.uk/files/phantom-open-emojis/symbols-phantom/13033-negative-squared-cross-mark.png" width="20" height="20"/>
+      {% else %}
+       <img src="http://pluspng.com/img-png/loader-png-indicator-loader-spinner-icon-512.png" width="20" height="20"/>
+      {% endif %} ;;
   }
 
 ### DYNAMIC DATE FILTER ###
@@ -80,10 +107,11 @@ view: orders {
     type: number
     sql: TIMESTAMPDIFF(MONTH,${users.created_raw},${created_raw}) ;;
   }
+
   dimension: status {
     type: string
     sql: ${TABLE}.status ;;
-  }
+}
 
   dimension: user_id {
     type: number
@@ -94,6 +122,7 @@ view: orders {
   measure: count {
     type: count
     drill_fields: [detail*]
+    html: <p style="color: blue; font-family: Arial; font-size:150%; text-align:center">{{ rendered_value }}</p> ;;
   }
 
   dimension: reporting_period {

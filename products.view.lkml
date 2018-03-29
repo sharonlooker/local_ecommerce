@@ -1,15 +1,51 @@
 view: products {
   sql_table_name: demo_db.products ;;
 
+  filter: with_category{
+    sql: EXISTS (
+        select distinct u.id
+        FROM public.users u
+        left join public.order_items oi on u.id=oi.user_id
+        left join public.inventory_items ii on oi.inventory_item_id = ii.id
+        WHERE u.id = users.id
+        AND {% condition with_category %} ii.product_category {% endcondition%} )
+       ;;
+  }
+
+  filter: without_category {
+    sql: NOT EXISTS (
+      select distinct u.id
+        FROM public.users u
+        left join public.order_items oi on u.id=oi.user_id
+        left join public.inventory_items ii on oi.inventory_item_id = ii.id
+        WHERE u.id = users.id
+        AND {% condition without_category %} ii.product_category {% endcondition%}
+        AND {% condition another_filter %} ii.department {% endcondition%} )
+      ;;
+  }
+
+  filter: another_filter {
+    type: string
+  }
+
   dimension: id {
     primary_key: yes
     type: number
-    sql: ${TABLE}.id ;;
+    sql: ${TABLE}.id;;
   }
 
   dimension: brand {
     type: string
     sql: ${TABLE}.brand ;;
+    link: {
+      label: "google brand"
+      url: "https://www.google.com/search?source={{value | uri_encode }}"
+    }
+
+    link: {
+      label: "google department"
+      url: "https://www.google.com/search?source={{department._value}}"
+    }
   }
 
   dimension: category {
@@ -27,6 +63,7 @@ view: products {
 
   dimension: department {
     type: string
+    hidden: yes
     sql: ${TABLE}.department ;;
   }
 
