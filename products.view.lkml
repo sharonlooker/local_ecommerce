@@ -48,11 +48,6 @@ view: products {
     }
   }
 
-  dimension: category {
-    type: string
-    sql: ${TABLE}.category ;;
-  }
-
   dimension: image {
     type: string
     html: <a href="/dashboards/4?Category={{category._value | uri_encode }}&Brand={{ _filters["products.brand"] | uri_encode }}">
@@ -63,8 +58,12 @@ view: products {
 
   dimension: department {
     type: string
-    hidden: yes
     sql: ${TABLE}.department ;;
+  }
+
+  dimension: category {
+    type: string
+    sql: ${TABLE}.category ;;
   }
 
   filter: stack_by {
@@ -76,7 +75,7 @@ view: products {
     sql: CASE WHEN {% parameter stack_by %} = 'Category' THEN ${category}
               WHEN {% parameter stack_by %} = 'Brand' THEN ${brand}
               WHEN {% parameter stack_by %} = 'Department' THEN ${department}
-            ELSE 'NA'
+            ELSE ${category}
           END
     ;;
     link: {

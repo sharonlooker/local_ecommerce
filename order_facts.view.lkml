@@ -17,8 +17,8 @@ view: order_facts {
       GROUP BY order_items.order_id, orders.user_id, orders.created_at
       ORDER BY order_id, order_date desc
  ;;
-  indexes: ["order_id", "order_date"]
-  sql_trigger_value: select current_date ;;
+#   indexes: ["order_id", "order_date"]
+#   sql_trigger_value: select current_date ;;
   }
 
   measure: count {
