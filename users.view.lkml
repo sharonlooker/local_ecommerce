@@ -1,6 +1,5 @@
 view: users {
-  sql_table_name: demo_db.users ;;
-
+  sql_table_name: users ;;
   dimension: id {
     primary_key: yes
     type: number
@@ -22,6 +21,11 @@ view: users {
   dimension: city {
     type: string
     sql: ${TABLE}.city ;;
+    html: <span style="font-size:16px">{{value}}</span> ;;
+    link: {
+      label: "google"
+      url: "https://www.google.com"
+    }
   }
 
   dimension: country {
@@ -123,6 +127,10 @@ view: users {
     sql: ${age} ;;
   }
 
+  measure: percent_of_total_count {
+    type: percent_of_total
+    sql: ${count} ;;
+  }
   # ----- Sets of fields for drilling ------
   set: detail {
     fields: [id, last_name, first_name, events.count, orders.count, user_data.count]

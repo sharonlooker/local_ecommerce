@@ -20,11 +20,6 @@ explore: users_if {
 }
 
 explore: users {
-  sql_always_where: {% if _user_attributes['brand'] == 'Calvin Klein' %}
-                      ${orders.status} = 'pending'
-                    {% else %}
-                      ${orders.status} = 'complete'
-                    {% endif %} ;;
   join: orders {
     type: inner
     relationship: one_to_many

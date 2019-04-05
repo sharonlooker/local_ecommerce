@@ -82,10 +82,19 @@ view: order_items {
     sql: ${sale_price} ;;
   }
 
+  parameter: sales_budget {
+    type: number
+  }
+
+  measure: budget {
+    type: number
+    sql: {% parameter sales_budget %} ;;
+    value_format_name: usd
+  }
   measure: total_sale_price {
     type: sum
     sql: ${sale_price} ;;
-    value_format: "$#.00;($#.00)"
+    value_format_name: usd
   }
 
   measure: sum_sale_price {
