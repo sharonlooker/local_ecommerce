@@ -46,6 +46,11 @@ view: products {
       label: "google department"
       url: "https://www.google.com/search?source={{department._value}}"
     }
+
+    link: {
+      label: "See {{value}} Dashboard"
+      url:"/dashboards/20?Brand={{value | uri_encode}}"
+    }
   }
 
   dimension: image {

@@ -118,6 +118,7 @@ view: users {
   }
 
   measure: count {
+    label: "# of Users"
     type: count
     drill_fields: [detail*]
   }
@@ -131,6 +132,7 @@ view: users {
     type: percent_of_total
     sql: ${count} ;;
   }
+
   # ----- Sets of fields for drilling ------
   set: detail {
     fields: [id, last_name, first_name, events.count, orders.count, user_data.count]
