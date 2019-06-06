@@ -122,7 +122,7 @@ view: orders {
   measure: count {
     type: count
     drill_fields: [detail*]
-    html: <p style="color: blue; font-family: Arial; font-size:150%; text-align:center">{{ rendered_value }}</p> ;;
+#     html: <p style="color: blue; font-family: Arial; font-size:150%; text-align:center">{{ rendered_value }}</p> ;;
   }
 
   dimension: reporting_period {
